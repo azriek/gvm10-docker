@@ -1,4 +1,4 @@
-FROM debian:stretch as builder
+FROM debian:buster as builder
 
 
 RUN sed "s/main/main extra non-free/g" /etc/apt/sources.list -i && apt-get update && apt-get install -y \
@@ -34,6 +34,7 @@ RUN sed "s/main/main extra non-free/g" /etc/apt/sources.list -i && apt-get updat
 		libxml2-dev \
 		gettext \
 		python-polib \
+		ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl --silent --show-error https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -45,16 +46,16 @@ RUN apt-get update && apt-get install -y \
 		yarn 
 
 ENV SOURCE_PATH="/src/openvas10/" \
-	GVM_LIBS_URL="https://github.com/greenbone/gvm-libs/archive/v10.0.0.tar.gz" \
-	GVM_LIBS="gvm-libs-10.0.0" \
+	GVM_LIBS_URL="https://github.com/greenbone/gvm-libs/archive/v11.0.1.tar.gz" \
+	GVM_LIBS="gvm-libs-11.0.1" \
 	OPENVAS_SMB_URL="https://github.com/greenbone/openvas-smb/archive/v1.0.5.tar.gz" \
 	OPENVAS_SMB="openvas-smb-1.0.5" \
-	OPENVAS_SCANNER_URL="https://github.com/greenbone/openvas-scanner/archive/v6.0.0.tar.gz" \
-	OPENVAS_SCANNER="openvas-scanner-6.0.0" \
-	GVMD_URL="https://github.com/greenbone/gvmd/archive/v8.0.0.tar.gz" \
-	GVMD="gvmd-8.0.0" \
-	GSA_URL="https://github.com/greenbone/gsa/archive/v8.0.0.tar.gz" \
-	GSA="gsa-8.0.0" \
+	OPENVAS_SCANNER_URL="https://github.com/greenbone/openvas-scanner/archive/v7.0.1.tar.gz" \
+	OPENVAS_SCANNER="openvas-7.0.1" \
+	GVMD_URL="https://github.com/greenbone/gvmd/archive/v9.0.1.tar.gz" \
+	GVMD="gvmd-9.0.1" \
+	GSA_URL="https://github.com/greenbone/gsa/archive/v9.0.0.tar.gz" \
+	GSA="gsa-9.0.0" \
 	INSTALL_PREFIX="/opt/openvas"
 	
 	
@@ -84,6 +85,8 @@ RUN export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH && c
 	make install
 
 ADD ${OPENVAS_SCANNER_URL} ${SOURCE_PATH}/${OPENVAS_SCANNER}.tar.gz
+
+RUN apt -y install postgresql-server-dev-all
 
 RUN export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH && cd ${SOURCE_PATH} && \
 	tar -xvzf ${OPENVAS_SCANNER}.tar.gz && \
@@ -122,11 +125,11 @@ RUN export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH && c
 	rm -rf ${INSTALL_PREFIX}/share/.cache
 
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 # missing lib :  ldd /usr/local/sbin/openvassd | grep "not found" | sed "s/\t\(.*\) => .*/\1/" | while read n ; do apt-file search $n ; done | sed "s/\(.*\): .*/\1/" | sort | uniq
 
-RUN sed "s/main/main extra non-free/g" /etc/apt/sources.list -i && apt-get update && apt-get install -y \
+RUN sed "s/main/main non-free/g" /etc/apt/sources.list -i && apt-get update && apt-get install -y \
 		apt-transport-https \
 		libglib2.0-0 \
 		libgpgme11 \
@@ -135,18 +138,19 @@ RUN sed "s/main/main extra non-free/g" /etc/apt/sources.list -i && apt-get updat
 		libgssapi3-heimdal \
 		libhdb9-heimdal \
 		libheimntlm0-heimdal \
-		libhiredis0.13 \
+		libhiredis0.14 \
 		libpcap0.8 \
 		libpopt0 \
 		libsnmp30 \
 		procps \
-		libical2 \
+		libical3 \
 		libmicrohttpd12 \
 		curl \
 		redis-server \
 		gnutls-bin \
 		rsync \
 		nmap \
+		postgresql postgresql-contrib \
 		&& rm -rf /var/lib/apt/lists/*
 
 
