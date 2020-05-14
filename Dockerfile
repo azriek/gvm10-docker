@@ -98,6 +98,8 @@ RUN export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH && c
 	make doc && \
 	make install
 
+RUN cp ${OPENVAS_SCANNER}/config/redis-openvas.conf ${INSTALL_PREFIX}/
+
 ADD ${GVMD_URL} ${SOURCE_PATH}/${GVMD}.tar.gz
 
 RUN export PKG_CONFIG_PATH=${INSTALL_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH && cd ${SOURCE_PATH} && \
@@ -157,9 +159,11 @@ RUN sed "s/main/main non-free/g" /etc/apt/sources.list -i && apt-get update && a
 ENV INSTALL_PREFIX="/opt/openvas"		
 
 COPY --from=builder ${INSTALL_PREFIX} ${INSTALL_PREFIX}
+COPY --from=builder ${INSTALL_PREFIX}/redis-openvas.conf /etc/redis/
 COPY gvmd-start.sh /
 RUN chmod +x /gvmd-start.sh
 
+RUN echo "db_address = /run/redis-openvas/redis.sock" > ${INSTALL_PREFIX}/etc/openvas/openvas.conf
 RUN echo "${INSTALL_PREFIX}/lib" > /etc/ld.so.conf.d/openvas.conf
 
 EXPOSE 443
