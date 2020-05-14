@@ -2,13 +2,27 @@
 
 ldconfig
 
-# Start redis server 
+/etc/init.d/redis-server start
+/etc/init.d/postgresql start
 
-redis-server /opt/openvas/share/doc/openvas-scanner/redis_config_examples/redis_3_2.conf
+/bin/sleep 5
 
+if psql -d gvmd -c "select 1" ; then 
+    echo 'database ok' 
+else 
+    echo 'database init'
+    su -l postgres -c "createuser -DRS root && 
+                createdb -O root gvmd && 
+                psql -d gvmd -c 'create role dba with superuser noinherit; 
+                                grant dba to root; 
+                                create extension \"uuid-ossp\"; 
+                                create extension \"pgcrypto\";'
+"
+
+fi
 
 /opt/openvas/bin/gvm-manage-certs -a
-/opt/openvas/sbin/openvassd
+
 /opt/openvas/sbin/gvmd
 /opt/openvas/sbin/gsad
 /bin/sleep 2 # wait initialisation
