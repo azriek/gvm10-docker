@@ -1,0 +1,108 @@
+    1  /opt/openvas/sbin/greenbone-nvt-sync
+    2  /opt/openvas/sbin/gvm-portnames-update 
+    3  apt install wget
+    4  apt update
+    5  apt install wget
+    6  /opt/openvas/sbin/gvm-portnames-update 
+    7  wget http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xml
+    8  openvas-portnames-update service-names-port-numbers.xml
+    9  /opt/openvas/sbin/gvm-portnames-update service-names-port-numbers.xml 
+   10  cd /opt/openvas/sbin/
+   11  ls
+   12  /opt/openvas/sbin/gvm-portnames-update service-names-port-numbers.xml 
+   13  /opt/openvas/sbin/gvm-portnames-update /service-names-port-numbers.xml 
+   14  export PATH="/opt/openvas/sbin:$PATH"
+   15  /opt/openvas/sbin/gvm-portnames-update /service-names-port-numbers.xml 
+   16  ls
+   17  openvas -u
+   18  ps aux
+   19  greenbone-certdata-sync 
+   20  greenbone-scapdata-sync 
+   21  apt search python3 | grep pip
+   22  apt search python3 
+   23  apt install python3-pip python3-paramiko python3-lxml python3-defusedxml
+   24  cd /usr/local/src/
+   25  wget "https://github.com/greenbone/ospd/archive/ospd-2.0.zip"
+   26  apt install unzip
+   27  unzip ospd-2.0.zip 
+   28  cd ospd-ospd-2.0/
+   29  ls
+   30  python3 setup.py 
+   31  apt-get install python3-setuptools python3-paramiko python3-defusedxml   python3-lxml
+   32  ls /usr/local/lib/python3.7/dist-packages/
+   33  python3 setup.py install
+   34  ls /usr/local/lib/python3.7/dist-packages/
+   35  ls /usr/local/lib/python3.7/dist-packages/ -alg
+   36  ls
+   37  cd ..
+   38  wget "https://github.com/greenbone/ospd-openvas/archive/ospd-openvas-1.0.zip"
+   39  unzip ospd-openvas-1.0.zip 
+   40  cd ospd-openvas-ospd-openvas-1.0/
+   41  ls
+   42  apt isntall python3-psutil
+   43  apt install python3-psutil
+   44  apt install python3-redis
+   45  apt install python3-packaging
+   46  python3 setup.py install
+   47  gvmd --get-scanners
+   48  cd
+   49  cd /opt/openvas/bin/
+   50  ls
+   51  cd ../sbin/
+   52  ls
+   53  openvas 
+   54  ps aux
+   55  ospd-openvas --help
+   56  ospd-openvas -f
+   57  ps aux
+   58  cat /etc/redis/redis-openvas.conf 
+   59  diff -NRu /etc/redis/redis-openvas.conf /etc/redis/redis.conf 
+   60  diff -Nru /etc/redis/redis-openvas.conf /etc/redis/redis.conf 
+   61  /etc/init.d/redis-server stop
+   62  cp /etc/redis/redis.conf /etc/redis/redis.conf.old
+   63  co /etc/redis/redis-openvas.conf /etc/redis/redis.conf
+   64  cp /etc/redis/redis-openvas.conf /etc/redis/redis.conf
+   65  /etc/init.d/redis-server start
+   66  ps aux
+   67  /etc/init.d/redis-server stop
+   68  ps aux
+   69  kill 15
+   70  ps aux
+   71  /etc/init.d/redis-server start
+   72  ps aux
+   73  ps aux
+   74  more /var/log/redis/redis-server.log 
+   75  cat /etc/redis/redis.conf.old 
+   76  apt search redis
+   77  mkdir /run/redis-openvas
+   78  /etc/init.d/redis-server start
+   79  ls  /run/redis-openvas
+   80  redis-server --help
+   81* redis-server 
+   82  apt install vi
+   83  apt install vim
+   84  vi /etc/redis/redis.conf
+   85  /etc/init.d/redis-server start
+   86  cat /var/log/redis/redis-server.log 
+   87  cat /etc/redis/redis.conf.old 
+   88  vi /etc/redis/redis.conf.old 
+   89  cp /etc/redis/redis.conf.old /etc/redis/redis.conf
+   90  /etc/init.d/redis-server start
+   91  ospd-openvas -f
+   92  ls -alh /run/redis-openvas/
+   93  more /var/log/redis/redis-server.log 
+   94  vi /etc/redis/redis.conf
+   95  /etc/init.d/redis-server start
+   96  more /var/log/redis/redis-server.log 
+   97  more /var/log/redis/redis-server.log 
+   98  vi /etc/redis/redis.conf
+   99  /etc/init.d/redis-server restart
+  100  more /var/log/redis/redis-server.log 
+  101  vi /etc/redis/redis.conf
+  102  chmod 777 /run/redis-openvas
+  103  /etc/init.d/redis-server restart
+  104  more /var/log/redis/redis-server.log 
+  105  ospd-openvas -f
+  106  mkdir /var/run/ospd
+  107  ospd-openvas -f
+  108  ospd-openvas --help
